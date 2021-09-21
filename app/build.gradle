@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -48,6 +49,8 @@ dependencies {
     def room_version = "2.3.0"
 
     implementation project(":domain")
+    implementation project(":usecases")
+    implementation project(":data")
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 

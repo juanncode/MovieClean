@@ -5,7 +5,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object MovieRetrofit {
+object MovieDbRetrofit {
 
     private val client = OkHttpClient.Builder().apply {
         addInterceptor(MyInterceptor())
@@ -17,5 +17,5 @@ object MovieRetrofit {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val service = retrofit.create(MovieService::class.java)
+    val service = retrofit.create(MovieDbService::class.java)
 }
