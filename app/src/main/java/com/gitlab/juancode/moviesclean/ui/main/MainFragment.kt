@@ -1,19 +1,18 @@
 package com.gitlab.juancode.moviesclean.ui.main
 
 import android.annotation.SuppressLint
-import android.app.ActionBar
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import com.gitlab.juancode.moviesclean.NavHostActivity
 import com.gitlab.juancode.moviesclean.R
 import com.gitlab.juancode.moviesclean.databinding.FragmentMainBinding
+import com.gitlab.juancode.moviesclean.ui.common.Event
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.scope.fragmentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,12 +43,28 @@ class MainFragment : Fragment(), AndroidScopeComponent {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this@MainFragment
 
-        movieAdapter = MovieAdapter()
+        movieAdapter = MovieAdapter {
+            viewModel.onItemClicked(it)
+        }
         binding.moviesRecycler.adapter = movieAdapter
 
-        viewModel.message.observe(viewLifecycleOwner, {
+        viewModel.modelMovie.observe(viewLifecycleOwner, {model ->
+            when(model) {
+                is MainViewModel.UiMovie.Data -> {
+                    movieAdapter.movies = model.movies
+                    binding.progressData.visibility = View.GONE
+                }
+                MainViewModel.UiMovie.Loading -> {
+                    binding.progressData.visibility = View.VISIBLE
+                }
+            }
+        })
+
+        viewModel.navigateToMovie.observe(viewLifecycleOwner, Event.EventObserver {
+            navController.navigate(R.id.action_mainFragment_to_detailFragment)
         })
     }
+
 
 
 }
