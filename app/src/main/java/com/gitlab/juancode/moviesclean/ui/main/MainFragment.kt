@@ -85,7 +85,8 @@ class MainFragment : Fragment(), AndroidScopeComponent {
         })
 
         viewModel.navigateToMovie.observe(viewLifecycleOwner, Event.EventObserver {
-            navController.navigate(R.id.action_mainFragment_to_detailFragment, bundleOf("movie" to it.title))
+            val action = MainFragmentDirections.actionMainFragmentToDetailFragment(it.toServiceMovie())
+            navController.navigate(action)
         })
     }
 

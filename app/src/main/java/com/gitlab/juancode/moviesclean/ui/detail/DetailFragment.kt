@@ -7,13 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.navArgs
 import com.gitlab.juancode.moviesclean.R
 import com.gitlab.juancode.moviesclean.databinding.FragmentDetailBinding
 
 class DetailFragment : Fragment() {
 
     private var binding: FragmentDetailBinding? = null
-
+    private val args: DetailFragmentArgs by navArgs()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,11 +27,7 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding?.lifecycleOwner = this@DetailFragment
-    }
 
-    override fun onDestroyView() {
-        Log.e("onDestroyView", "true")
-        binding?.unbind()
-        super.onDestroyView()
+        binding?.titleDetail?.text = args.movie.title
     }
 }
