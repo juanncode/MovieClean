@@ -2,7 +2,6 @@ package com.gitlab.juancode.moviesclean.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.gitlab.juancode.domain.Movie
 import com.gitlab.juancode.moviesclean.ui.common.Event
 import com.gitlab.juancode.moviesclean.ui.common.ScopeViewModel
@@ -17,21 +16,33 @@ class MainViewModel(private val getPopularMovies: GetPopularMovies): ScopeViewMo
     }
     private val _modelMovie = MutableLiveData<UiMovie>()
     val modelMovie: LiveData<UiMovie>
-        get() {
-            if (_modelMovie.value == null) loadMovies()
-            return _modelMovie
-        }
+        get() = _modelMovie
 
-    private val _navigateToMovie = MutableLiveData<Event<Int>>()
-    val navigateToMovie: LiveData<Event<Int>> get() = _navigateToMovie
+    private val _navigateToMovie = MutableLiveData<Event<Movie>>()
+    val navigateToMovie: LiveData<Event<Movie>> get() = _navigateToMovie
 
-    fun loadMovies() {
+    private val _requestPermission = MutableLiveData<Event<Unit>>()
+    val requestPermission: LiveData<Event<Unit>> get() = _requestPermission
+
+    init {
+        loadPermission()
+    }
+
+    private fun loadPermission() {
+        _requestPermission.value = Event(Unit)
+    }
+
+    private fun loadMovies() {
         launch {
             _modelMovie.value = UiMovie.Data(getPopularMovies.invoke())
         }
     }
 
     fun onItemClicked(movie: Movie) {
-        _navigateToMovie.value = Event(movie.id)
+        _navigateToMovie.value = Event(movie)
+    }
+
+    fun onCoarsePermissionRequested() {
+        loadMovies()
     }
 }

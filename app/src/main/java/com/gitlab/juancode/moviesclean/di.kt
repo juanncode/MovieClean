@@ -2,9 +2,14 @@ package com.gitlab.juancode.moviesclean
 
 import android.app.Application
 import com.gitlab.juancode.data.repositories.MovieRepository
+import com.gitlab.juancode.data.repositories.PermissionCheckerApp
+import com.gitlab.juancode.data.repositories.RegionRepository
+import com.gitlab.juancode.data.sources.LocationDataSource
 import com.gitlab.juancode.data.sources.RemoteDataSource
+import com.gitlab.juancode.moviesclean.data.PlayServicesLocationDataSource
 import com.gitlab.juancode.moviesclean.data.database.MovieDatabase
 import com.gitlab.juancode.moviesclean.data.service.MovieDbDataSource
+import com.gitlab.juancode.moviesclean.permissions.AndroidPermissionChecker
 import com.gitlab.juancode.moviesclean.ui.main.MainFragment
 import com.gitlab.juancode.moviesclean.ui.main.MainViewModel
 import com.gitlab.juancode.usecases.GetPopularMovies
@@ -27,10 +32,13 @@ private val appModule = module {
     single(named("apiKey")) { androidApplication().resources.getString(R.string.api_key) }
     single { MovieDatabase.build(androidContext()) }
     factory<RemoteDataSource> { MovieDbDataSource() }
+    factory<LocationDataSource> { PlayServicesLocationDataSource(get()) }
+    factory<PermissionCheckerApp> { AndroidPermissionChecker(get()) }
 }
 
 private val dataModule = module {
-    factory { MovieRepository(get(), get(named("apiKey"))) }
+    factory { MovieRepository(get(), get(), get(named("apiKey"))) }
+    factory { RegionRepository(get(), get()) }
 }
 
 private val scopesModule = module {

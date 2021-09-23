@@ -1,16 +1,19 @@
 package com.gitlab.juancode.moviesclean.ui.main
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.gitlab.juancode.moviesclean.R
+import com.gitlab.juancode.moviesclean.data.toServiceMovie
 import com.gitlab.juancode.moviesclean.databinding.FragmentMainBinding
 import com.gitlab.juancode.moviesclean.ui.common.Event
 import org.koin.android.scope.AndroidScopeComponent
@@ -26,6 +29,15 @@ class MainFragment : Fragment(), AndroidScopeComponent {
     lateinit var navController: NavController
     lateinit var movieAdapter: MovieAdapter
 
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            permissions.forEach { isGrantedMap ->
+                if (isGrantedMap.key == Manifest.permission.ACCESS_COARSE_LOCATION) {
+                    viewModel.onCoarsePermissionRequested()
+                }
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,6 +50,8 @@ class MainFragment : Fragment(), AndroidScopeComponent {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         navController = view.findNavController()
 
         binding.viewModel = viewModel
@@ -46,10 +60,11 @@ class MainFragment : Fragment(), AndroidScopeComponent {
         movieAdapter = MovieAdapter {
             viewModel.onItemClicked(it)
         }
+
         binding.moviesRecycler.adapter = movieAdapter
 
-        viewModel.modelMovie.observe(viewLifecycleOwner, {model ->
-            when(model) {
+        viewModel.modelMovie.observe(viewLifecycleOwner, { model ->
+            when (model) {
                 is MainViewModel.UiMovie.Data -> {
                     movieAdapter.movies = model.movies
                     binding.progressData.visibility = View.GONE
@@ -60,11 +75,18 @@ class MainFragment : Fragment(), AndroidScopeComponent {
             }
         })
 
+        viewModel.requestPermission.observe(viewLifecycleOwner, Event.EventObserver {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.SEND_SMS
+                )
+            )
+        })
+
         viewModel.navigateToMovie.observe(viewLifecycleOwner, Event.EventObserver {
-            navController.navigate(R.id.action_mainFragment_to_detailFragment)
+            navController.navigate(R.id.action_mainFragment_to_detailFragment, bundleOf("movie" to it.title))
         })
     }
-
-
 
 }

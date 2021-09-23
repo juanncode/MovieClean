@@ -16,3 +16,20 @@ fun ServiceMovie.toDomainMovie(): Movie  = Movie(
     voteAverage,
     false
 )
+
+fun Movie.toServiceMovie(): ServiceMovie = ServiceMovie(
+    id = id,
+    title = title,
+    overview = overview,
+    releaseDate = releaseDate,
+    posterPath = posterPath,
+    backdropPath = backdropPath ?: posterPath,
+    originalLanguage = originalLanguage,
+    originalTitle = originalTitle,
+    popularity = popularity,
+    voteAverage = voteAverage,
+    adult = false,
+    genreIds = listOf(),
+    video = false,
+    voteCount = 0
+)
