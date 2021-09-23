@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.navArgs
 import com.gitlab.juancode.moviesclean.R
 import com.gitlab.juancode.moviesclean.databinding.FragmentDetailBinding
+import com.gitlab.juancode.moviesclean.ui.common.loadImage
 
 class DetailFragment : Fragment() {
 
@@ -28,6 +29,11 @@ class DetailFragment : Fragment() {
 
         binding?.lifecycleOwner = this@DetailFragment
 
-        binding?.titleDetail?.text = args.movie.title
+        binding?.txtTitle?.text = args.movie.title
+        binding?.txtDescription?.text = args.movie.overview
+        binding?.txtPopularity?.text = args.movie.voteAverage.toString()
+        binding?.txtLanguage?.text = args.movie.originalLanguage.uppercase()
+        binding?.txtPublishing?.text = args.movie.releaseDate
+        binding?.imgPoster?.loadImage("https://image.tmdb.org/t/p/w780/${args.movie.backdropPath}"?:"")
     }
 }
