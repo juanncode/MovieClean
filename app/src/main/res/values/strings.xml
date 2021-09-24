@@ -6,5 +6,6 @@
     <string name="populariryText">Popularidad</string>
     <string name="languageText">Idioma</string>
     <string name="publishingText">Lanzamiento</string>
+    <string name="question_search">¿Qué te gustaría buscar?</string>
 
 </resources>

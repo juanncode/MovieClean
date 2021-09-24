@@ -88,6 +88,11 @@ class MainFragment : Fragment(), AndroidScopeComponent {
             val action = MainFragmentDirections.actionMainFragmentToDetailFragment(it.toServiceMovie())
             navController.navigate(action)
         })
+
+        viewModel.navigateToSearch.observe(viewLifecycleOwner, Event.EventObserver {
+            val action = MainFragmentDirections.actionMainFragmentToSearchFragment()
+            navController.navigate(action)
+        })
     }
 
 }

@@ -11,4 +11,11 @@ interface MovieDbService {
         @Query("api_key") apiKey: String,
         @Query("region") region: String
     ): MovieDbResult
+
+    @GET("search/movie")
+    suspend fun searchMovies(
+        @Query("api_key") apiKey: String,
+        @Query("query") query: String,
+        @Query("page") page: Int = 1
+    ): MovieDbResult
 }

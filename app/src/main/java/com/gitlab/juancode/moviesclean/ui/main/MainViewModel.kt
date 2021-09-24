@@ -21,6 +21,9 @@ class MainViewModel(private val getPopularMovies: GetPopularMovies): ScopeViewMo
     private val _navigateToMovie = MutableLiveData<Event<Movie>>()
     val navigateToMovie: LiveData<Event<Movie>> get() = _navigateToMovie
 
+    private val _navigateToSearch = MutableLiveData<Event<Unit>>()
+    val navigateToSearch: LiveData<Event<Unit>> get() = _navigateToSearch
+
     private val _requestPermission = MutableLiveData<Event<Unit>>()
     val requestPermission: LiveData<Event<Unit>> get() = _requestPermission
 
@@ -44,5 +47,9 @@ class MainViewModel(private val getPopularMovies: GetPopularMovies): ScopeViewMo
 
     fun onCoarsePermissionRequested() {
         loadMovies()
+    }
+
+    fun onSearchIconClick() {
+        _navigateToSearch.value = Event(Unit)
     }
 }

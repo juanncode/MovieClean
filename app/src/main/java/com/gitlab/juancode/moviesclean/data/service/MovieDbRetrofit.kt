@@ -17,5 +17,5 @@ object MovieDbRetrofit {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val service = retrofit.create(MovieDbService::class.java)
+    val service: MovieDbService = retrofit.create(MovieDbService::class.java)
 }

@@ -7,4 +7,8 @@ class MovieRepository(private val remoteDataSource: RemoteDataSource, private va
     suspend fun getPopularMovies(): List<Movie> {
         return remoteDataSource.getPopularMovies(apiKey, regionRepository.findLastRegion())
     }
+
+    suspend fun getSearchMovies(query: String): List<Movie> {
+        return remoteDataSource.searchMovies(apiKey, query)
+    }
 }

@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:orientation="horizontal"
-                android:background="@color/design_default_color_primary">
+                android:background="@color/white">
 
                 <ImageView
                     android:layout_weight="1"
@@ -60,7 +60,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:text="@string/title_app"/>
 
                 </LinearLayout>
@@ -70,7 +70,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
-                    android:src="@android:drawable/ic_menu_search"
+                    android:onClick="@{()->viewModel.onSearchIconClick()}"
+                    android:src="@drawable/ic_search"
                     tools:ignore="ContentDescription" />
             </LinearLayout>
 
