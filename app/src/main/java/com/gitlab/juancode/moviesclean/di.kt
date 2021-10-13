@@ -1,7 +1,6 @@
 package com.gitlab.juancode.moviesclean
 
 import android.app.Application
-import android.app.SearchManager
 import com.gitlab.juancode.data.repositories.MovieRepository
 import com.gitlab.juancode.data.repositories.PermissionCheckerApp
 import com.gitlab.juancode.data.repositories.RegionRepository
@@ -22,6 +21,7 @@ import com.gitlab.juancode.moviesclean.ui.search.SearchViewModel
 import com.gitlab.juancode.usecases.FindMovieById
 import com.gitlab.juancode.usecases.GetPopularMovies
 import com.gitlab.juancode.usecases.GetSearchMovies
+import com.gitlab.juancode.usecases.SaveMovie
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -58,8 +58,9 @@ private val scopesModule = module {
     }
 
     scope(named<SearchFragment>()) {
-        viewModel { SearchViewModel(get()) }
+        viewModel { SearchViewModel(get(), get()) }
         scoped { GetSearchMovies(get()) }
+        scoped { SaveMovie(get()) }
     }
 
     scope(named<DetailFragment>()) {

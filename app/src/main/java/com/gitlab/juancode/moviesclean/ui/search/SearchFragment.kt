@@ -1,18 +1,17 @@
 package com.gitlab.juancode.moviesclean.ui.search
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.gitlab.juancode.moviesclean.R
-import com.gitlab.juancode.moviesclean.data.toServiceMovie
 import com.gitlab.juancode.moviesclean.databinding.SearchFragmentBinding
+import com.gitlab.juancode.moviesclean.ui.common.Event
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.scope.fragmentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,10 +20,10 @@ import org.koin.core.scope.Scope
 class SearchFragment : Fragment(), AndroidScopeComponent {
     override val scope: Scope by fragmentScope()
 
-    lateinit var binding : SearchFragmentBinding
-    lateinit var navController: NavController
+    private lateinit var binding : SearchFragmentBinding
+    private lateinit var navController: NavController
     private val viewModel: SearchViewModel by viewModel()
-    lateinit var searchAdapter: SearchAdapter
+    private lateinit var searchAdapter: SearchAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,8 +41,8 @@ class SearchFragment : Fragment(), AndroidScopeComponent {
         binding.lifecycleOwner = this@SearchFragment
 
         searchAdapter = SearchAdapter{
-            val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(it.id)
-            navController.navigate(action)
+            viewModel.saveMovie(it)
+
         }
         binding.recyclerMovies.adapter = searchAdapter
 
@@ -69,6 +68,11 @@ class SearchFragment : Fragment(), AndroidScopeComponent {
                 }
                 SearchViewModel.SearchModel.Close -> navController.popBackStack()
             }
+        })
+
+        viewModel.navigation.observe(viewLifecycleOwner, Event.EventObserver{
+            val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(it.id)
+            navController.navigate(action)
         })
 
     }

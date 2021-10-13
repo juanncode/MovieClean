@@ -7,9 +7,10 @@ import com.gitlab.juancode.domain.Movie
 import com.gitlab.juancode.moviesclean.ui.common.Event
 import com.gitlab.juancode.moviesclean.ui.common.ScopeViewModel
 import com.gitlab.juancode.usecases.GetSearchMovies
+import com.gitlab.juancode.usecases.SaveMovie
 import kotlinx.coroutines.launch
 
-class SearchViewModel(private val getSearchMovies: GetSearchMovies) : ScopeViewModel() {
+class SearchViewModel(private val getSearchMovies: GetSearchMovies, private val saveMovie: SaveMovie) : ScopeViewModel() {
 
     sealed class SearchModel {
         object Loading : SearchModel()
@@ -28,6 +29,13 @@ class SearchViewModel(private val getSearchMovies: GetSearchMovies) : ScopeViewM
             val data = getSearchMovies.invoke(query)
             _model.value = SearchModel.Loading
             _model.value = SearchModel.Data(data)
+        }
+    }
+
+    fun saveMovie(movie: Movie) {
+        launch {
+            saveMovie.invoke(movie)
+            _navigation.value = Event(movie)
         }
     }
 

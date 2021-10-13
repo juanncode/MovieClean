@@ -27,4 +27,8 @@ class MovieRepository(
         return localDataSource.getById(id)
     }
 
+    suspend fun saveMovie(movie: Movie) {
+        localDataSource.saveMovie(movie)
+    }
+
 }
