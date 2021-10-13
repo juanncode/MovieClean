@@ -38,6 +38,7 @@
                 android:background="@drawable/shape_circle_green"
                 app:layout_constraintEnd_toEndOf="@+id/imgPoster"
                 app:layout_constraintTop_toBottomOf="@+id/imgPoster"
+                android:onClick="@{()-> viewmodel.onFavoriteClicked()}"
                 app:srcCompat="@drawable/ic_favorite_border"
                 tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
 

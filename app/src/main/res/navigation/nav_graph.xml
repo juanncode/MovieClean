@@ -26,8 +26,9 @@
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <argument
-            android:name="movie"
-            app:argType="com.gitlab.juancode.moviesclean.data.service.models.Movie" />
+            android:name="idMovie"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"

@@ -42,7 +42,7 @@ class SearchFragment : Fragment(), AndroidScopeComponent {
         binding.lifecycleOwner = this@SearchFragment
 
         searchAdapter = SearchAdapter{
-            val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(it.toServiceMovie())
+            val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(it.id)
             navController.navigate(action)
         }
         binding.recyclerMovies.adapter = searchAdapter

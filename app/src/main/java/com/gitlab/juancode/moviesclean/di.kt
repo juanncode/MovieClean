@@ -13,10 +13,13 @@ import com.gitlab.juancode.moviesclean.data.database.MovieDatabase
 import com.gitlab.juancode.moviesclean.data.database.RoomDataSource
 import com.gitlab.juancode.moviesclean.data.service.MovieDbDataSource
 import com.gitlab.juancode.moviesclean.permissions.AndroidPermissionChecker
+import com.gitlab.juancode.moviesclean.ui.detail.DetailFragment
+import com.gitlab.juancode.moviesclean.ui.detail.DetailViewModel
 import com.gitlab.juancode.moviesclean.ui.main.MainFragment
 import com.gitlab.juancode.moviesclean.ui.main.MainViewModel
 import com.gitlab.juancode.moviesclean.ui.search.SearchFragment
 import com.gitlab.juancode.moviesclean.ui.search.SearchViewModel
+import com.gitlab.juancode.usecases.FindMovieById
 import com.gitlab.juancode.usecases.GetPopularMovies
 import com.gitlab.juancode.usecases.GetSearchMovies
 import org.koin.android.ext.koin.androidApplication
@@ -57,5 +60,10 @@ private val scopesModule = module {
     scope(named<SearchFragment>()) {
         viewModel { SearchViewModel(get()) }
         scoped { GetSearchMovies(get()) }
+    }
+
+    scope(named<DetailFragment>()) {
+        viewModel {(id: Int) -> DetailViewModel(id, get()) }
+        scoped { FindMovieById(get()) }
     }
 }

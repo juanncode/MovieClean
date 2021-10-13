@@ -22,4 +22,9 @@ class MovieRepository(
     suspend fun getSearchMovies(query: String): List<Movie> {
         return remoteDataSource.searchMovies(apiKey, query)
     }
+
+    suspend fun findById(id: Int): Movie {
+        return localDataSource.getById(id)
+    }
+
 }

@@ -5,6 +5,7 @@ import com.gitlab.juancode.domain.Movie
 interface LocalDataSource {
 
     suspend fun getAllMovies(): List<Movie>
+    suspend fun getById(id: Int): Movie
     suspend fun saveAllMovie(movies: List<Movie>)
     suspend fun saveMovie(movie: Movie)
     suspend fun updateMovie(movie: Movie)
