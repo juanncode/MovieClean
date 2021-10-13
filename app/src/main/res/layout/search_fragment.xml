@@ -33,6 +33,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
+                    android:onClick="@{()->viewModel.onBackClicked()}"
                     android:src="@drawable/ic_arrow_back"
                     tools:ignore="ContentDescription" />
 
@@ -62,6 +63,13 @@
 
             </LinearLayout>
 
+            <ProgressBar
+                android:id="@+id/progressSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerMovies"
                 android:layout_width="match_parent"
@@ -71,6 +79,8 @@
                 tools:listitem="@layout/item_search" />
 
         </LinearLayout>
+
+
 
     </FrameLayout>
 </layout>

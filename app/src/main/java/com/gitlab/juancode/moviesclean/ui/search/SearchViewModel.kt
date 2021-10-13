@@ -13,6 +13,7 @@ class SearchViewModel(private val getSearchMovies: GetSearchMovies) : ScopeViewM
 
     sealed class SearchModel {
         object Loading : SearchModel()
+        object Close : SearchModel()
         class Data(val data: List<Movie>): SearchModel()
     }
 
@@ -28,5 +29,9 @@ class SearchViewModel(private val getSearchMovies: GetSearchMovies) : ScopeViewM
             _model.value = SearchModel.Loading
             _model.value = SearchModel.Data(data)
         }
+    }
+
+    fun onBackClicked() {
+        _model.value = SearchModel.Close
     }
 }

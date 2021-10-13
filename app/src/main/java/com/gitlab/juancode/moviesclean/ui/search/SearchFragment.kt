@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.gitlab.juancode.moviesclean.R
+import com.gitlab.juancode.moviesclean.data.toServiceMovie
 import com.gitlab.juancode.moviesclean.databinding.SearchFragmentBinding
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.scope.fragmentScope
@@ -40,7 +41,10 @@ class SearchFragment : Fragment(), AndroidScopeComponent {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this@SearchFragment
 
-        searchAdapter = SearchAdapter()
+        searchAdapter = SearchAdapter{
+            val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(it.toServiceMovie())
+            navController.navigate(action)
+        }
         binding.recyclerMovies.adapter = searchAdapter
 
         binding.editSearch.addTextChangedListener { text ->
@@ -50,13 +54,20 @@ class SearchFragment : Fragment(), AndroidScopeComponent {
         }
 
         viewModel.model.observe(viewLifecycleOwner, { model ->
+            if (model != SearchViewModel.SearchModel.Loading) {
+                binding.progressSearch.visibility = View.GONE
+                binding.recyclerMovies.visibility = View.VISIBLE
+            }
+
             when(model) {
                 is SearchViewModel.SearchModel.Data -> {
                     searchAdapter.movies = model.data
                 }
                 SearchViewModel.SearchModel.Loading -> {
-
+                    binding.progressSearch.visibility = View.VISIBLE
+                    binding.recyclerMovies.visibility = View.GONE
                 }
+                SearchViewModel.SearchModel.Close -> navController.popBackStack()
             }
         })
 

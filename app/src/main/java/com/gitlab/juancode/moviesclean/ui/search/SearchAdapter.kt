@@ -11,7 +11,7 @@ import com.gitlab.juancode.moviesclean.ui.common.loadImage
 import kotlin.properties.Delegates
 
 @SuppressLint("NotifyDataSetChanged")
-class SearchAdapter: RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+class SearchAdapter(val itemClickedListener: (movie: Movie) -> Unit): RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
 
     var movies: List<Movie> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()
@@ -25,7 +25,9 @@ class SearchAdapter: RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val movie = movies[position]
         holder.bind(movie)
-        holder.itemView.setOnClickListener {  }
+        holder.itemView.setOnClickListener {
+            itemClickedListener(movie)
+        }
 
     }
 
